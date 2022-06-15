@@ -11,14 +11,17 @@
                     <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto ">
                         <div class="card card-plain">
                             <div class="card-header text-center">
-                                <h4 class="font-weight-bolder">Reset Password</h4>
+                                <h4 class="font-weight-bolder text-primary">
+                                    {{ trans('reset-password.heading') }}
+                                </h4>
                             </div>
                             <div class="card-body">
-                                <form role="form">
+                                <form role="form" wire:submit.prevent='resetPassword()'>
                                     <div class="input-group input-group-outline mb-3">
                                         <input id="email" type="email" wire:model.defer="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" autocomplete="email" placeholder="Enter Email">
+                                            value="{{ old('email') }}" autocomplete="email"
+                                            placeholder="{{ trans('reset-password.email') }}">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -29,7 +32,7 @@
                                         <input id="password" type="password" wire:model.defer="password"
                                             class="form-control @error('password') is-invalid @enderror" name="password"
                                             value="{{ old('password') }}" autocomplete="password"
-                                            placeholder="Enter New Password">
+                                            placeholder="{{ trans('reset-password.password') }}">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -41,7 +44,8 @@
                                             wire:model.defer="passwordConfirmation"
                                             class="form-control @error('passwordConfirmation') is-invalid @enderror"
                                             name="passwordConfirmation" value="{{ old('passwordConfirmation') }}"
-                                            autocomplete="passwordConfirmation" placeholder="Confirm New Password">
+                                            autocomplete="passwordConfirmation"
+                                            placeholder="{{ trans('reset-password.confirm-password') }}">
                                         @error('passwordConfirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -49,19 +53,20 @@
                                         @enderror
                                     </div>
                                     <div class="text-center">
-                                        <button wire:click='resetPassword()' type="button"
-                                            class="btn btn-lg btn-bg-green btn-lg w-100 mt-4 mb-0">
+                                        <button type="submit"
+                                            class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
                                             <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
-                                            {{ __('Reset Password') }}
+                                            {{ trans('reset-password.reset-btn') }}
                                         </button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <p class="mb-2 text-sm mx-auto">
-                                    <a href="{{ route('login') }}" class="text-green font-weight-bold">
-                                        Login here
+                                    <a href="{{ route('login', App::getLocale()) }}"
+                                        class="text-primary font-weight-bold">
+                                        {{ trans('reset-password.have-account') }}
                                     </a>
                                 </p>
                             </div>

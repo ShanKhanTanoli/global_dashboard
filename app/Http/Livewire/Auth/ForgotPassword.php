@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\Auth;
 
-use Livewire\Component;
 use App\Models\User;
+use Livewire\Component;
+use App\Helpers\Redirect;
 
-use Illuminate\Notifications\Notifiable;
+use App\Notifications\Alerts;
+use Illuminate\Support\Facades\App;
 use App\Notifications\ResetPassword;
+use Illuminate\Notifications\Notifiable;
 
 class ForgotPassword extends Component
 {
@@ -18,10 +21,11 @@ class ForgotPassword extends Component
         'email' => 'required|email',
     ];
 
-    public function mount()
+    public function mount($lang = "en")
     {
+        App::setLocale($lang);
         if (auth()->user()) {
-            redirect('/dashboard');
+            redirect(Redirect::ToDashboard());
         }
     }
 
@@ -36,9 +40,14 @@ class ForgotPassword extends Component
         $user = User::where('email', $this->email)->first();
         if ($user) {
             $this->notify(new ResetPassword($user->id));
-            return session()->flash('success', 'A password reset link has been sent to ' . $this->email);
+            //Send Notification
+            $data = [
+                'message' => 'notifications.reset-password',
+            ];
+            $user->notify(new Alerts($data));
+            return session()->flash('success', trans('alerts.password-email-sent'));
         } else {
-            return session()->flash('error', 'Email not found');
+            return session()->flash('error', trans('alerts.no-email'));
         }
     }
 

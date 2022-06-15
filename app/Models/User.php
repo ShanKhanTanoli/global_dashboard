@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Site;
+use App\Models\Setting;
+use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Business\BusinessDetail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,11 +26,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'user_name',
         'email',
         'number',
+        'address',
         'password',
         'role',
-        'role_id',
         'slug',
-        'parent_business_id',
     ];
 
     /**
@@ -40,7 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
         'role',
-        'role_id',
     ];
 
     /**
@@ -51,4 +51,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function settings()
+    {
+        return $this->hasOne(Setting::class);
+    }
+
+    public function details()
+    {
+        return $this->hasOne(BusinessDetail::class);
+    }
 }

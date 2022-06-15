@@ -2,26 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Setting extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'company_name', 'company_logo', 'company_email',
-        'company_phone', 'company_address',
+        'company_name',
+        'company_logo',
+        'company_email',
+        'company_phone',
+        'company_address',
+        'comission_percentage',
+        'language_id',
+        'currency_id'
     ];
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function Logo()
     {
         $settings = Setting::first();
         if ($settings) {
-            if ($settings->company_logo) {
-                return $settings->company_logo;
-            } else return $settings->company_name;
+            return $settings->company_name;
         } else return "Home";
     }
 }

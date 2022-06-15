@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Auth;
 
-use App\Helpers\Redirect;
-use Livewire\Component;
 use App\Models\User;
+use Livewire\Component;
+use App\Helpers\Redirect;
+use App\Notifications\Alerts;
+use Illuminate\Support\Facades\App;
 
 class Login extends Component
 {
@@ -17,28 +19,29 @@ class Login extends Component
         'password' => 'required',
     ];
 
-    public function mount() {
-        if(auth()->user()){
+    public function mount($lang = "en")
+    {
+        App::setLocale($lang);
+        if (auth()->user()) {
             redirect(Redirect::ToDashboard());
         }
-        //$this->fill(['email' => 'shankhantanoli1@gmail.com', 'password' => 'secret']);
     }
 
-    public function login() {
+    public function login()
+    {
         $credentials = $this->validate();
-        if(auth()->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
+        if (auth()->attempt(['email' => $this->email, 'password' => $this->password], $this->remember_me)) {
             $user = User::where(["email" => $this->email])->first();
             auth()->login($user, $this->remember_me);
-            return redirect()->intended(Redirect::ToDashboard());        
-        }
-        else{
-            return $this->addError('email', trans('auth.failed')); 
+            return redirect()->intended(Redirect::ToDashboard());
+        } else {
+            return $this->addError('email', trans('auth.failed'));
         }
     }
 
     public function render()
     {
         return view('livewire.auth.login')
-        ->extends('layouts.auth');
+            ->extends('layouts.auth');
     }
 }

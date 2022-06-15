@@ -193,11 +193,14 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
 
+        'Helper' => App\Helpers\Helper::class,
         'Setting' => App\Models\Setting::class,
         'Admin' => App\Helpers\Admin\Admin::class,
-        'Tenant' => App\Helpers\Tenant\Tenant::class,
-        'Landlord' => App\Helpers\Landlord\Landlord::class,
-        'Contractor' => App\Helpers\Contractor\Contractor::class,
+        'Buyer' => App\Helpers\Buyer\Buyer::class,
+        'Seller' => App\Helpers\Seller\Seller::class,
+        'Currency' => App\Helpers\Currency\Currency::class,
+        'Language' => App\Helpers\Language\Language::class,
+        
 
     ])->toArray(),
 

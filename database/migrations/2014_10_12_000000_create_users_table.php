@@ -17,20 +17,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-
             $table->string('avatar')->nullable();
             $table->string('name')->nullable();
             $table->string('user_name')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('number')->unique()->nullable();
+            $table->mediumText('address')->nullable();
             $table->string('password')->nullable();
-
-            $table->enum('role', ['admin', 'landlord', 'tenant', 'contractor'])->nullable();
-
-            $table->enum('role_id', ['1', '2', '3', '4'])->nullable();
-
-            $table->string('slug')->nullable();
+            $table->string('role')->nullable();
+            $table->string('slug')->unique()->nullable();
 
             $table->rememberToken()->nullable();
             $table->timestamps();
@@ -41,47 +37,34 @@ return new class extends Migration
             'user_name' => 'admin',
             'email' => 'admin@email.com',
             'number' => mt_rand(100000000000, 999999999999),
+            'address' => 'This is the address',
             'password' => bcrypt('password'),
             'role' => 'admin',
-            'role_id' => '1',
             'slug' => strtoupper(Str::random(20)),
         ]);
 
-        for ($landlord = 1; $landlord < 101; $landlord++) {
+        for ($buyer = 1; $buyer < 4; $buyer++) {
             User::create([
-                'name' => 'landlord' . $landlord,
-                'user_name' => 'landlord' . $landlord,
-                'email' => 'landlord' . $landlord . '@email.com',
+                'name' => 'buyer' . $buyer,
+                'user_name' => 'buyer' . $buyer,
+                'email' => 'buyer' . $buyer . '@email.com',
                 'number' => mt_rand(100000000000, 999999999999),
+                'address' => 'This is the address',
                 'password' => bcrypt('password'),
-                'role' => 'landlord',
-                'role_id' => '2',
+                'role' => 'buyer',
                 'slug' => strtoupper(Str::random(20)),
             ]);
         }
 
-        for ($tenant = 1; $tenant < 101; $tenant++) {
+        for ($seller = 1; $seller < 4; $seller++) {
             User::create([
-                'name' => 'tenant' . $tenant,
-                'user_name' => 'tenant' . $tenant,
-                'email' => 'tenant' . $tenant . '@email.com',
+                'name' => 'seller' . $seller,
+                'user_name' => 'seller' . $seller,
+                'email' => 'seller' . $seller . '@email.com',
                 'number' => mt_rand(100000000000, 999999999999),
+                'address' => 'This is the address',
                 'password' => bcrypt('password'),
-                'role' => 'tenant',
-                'role_id' => '3',
-                'slug' => strtoupper(Str::random(20)),
-            ]);
-        }
-
-        for ($contractor = 1; $contractor < 101; $contractor++) {
-            User::create([
-                'name' => 'contractor' . $contractor,
-                'user_name' => 'contractor' . $contractor,
-                'email' => 'contractor' . $contractor . '@email.com',
-                'number' => mt_rand(100000000000, 999999999999),
-                'password' => bcrypt('password'),
-                'role' => 'contractor',
-                'role_id' => '4',
+                'role' => 'seller',
                 'slug' => strtoupper(Str::random(20)),
             ]);
         }

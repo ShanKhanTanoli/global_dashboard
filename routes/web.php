@@ -1,38 +1,49 @@
 <?php
 
+use App\Helpers\Redirect;
+use App\Helpers\Admin\Admin;
+use App\Helpers\Stripe\Stripe;
+use App\Helpers\Business\Business;
+use App\Notifications\Alerts;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //Auth::routes();
 
+
+Route::get('lang/{lang?}', function ($lang = "en") {
+    App::setLocale($lang);
+    return trans('lang.msg');
+});
+
 Route::get('debug', function () {
-    return "done";
 });
 
 
-Route::get('/home', function () {
-    return redirect(route('AdminDashboard'));
+Route::get('/home/{lang?}', function () {
+    return redirect(Redirect::ToDashboard());
 })->name('home');
 
 
-Route::get('/', function () {
-    return redirect(route('login'));
+Route::get('/{lang?}', function ($lang = "en") {
+    
+    App::setLocale($lang);
+    return redirect(Redirect::ToDashboard());
+
 })->name('main');
 
 /*Begin::Admin Routes*/
 include('admin/index.php');
 /*End::Admin Routes*/
 
-/*Begin::Landlord Routes*/
-include('landlord/index.php');
-/*End::Landlord Routes*/
+/*Begin::Buyer Routes*/
+include('buyer/index.php');
+/*End::Buyer Routes*/
 
-/*Begin::Tenant Routes*/
-include('tenant/index.php');
-/*End::Tenant Routes*/
-
-/*Begin::Contractor Routes*/
-include('contractor/index.php');
-/*End::Contractor Routes*/
+/*Begin::Seller Routes*/
+include('seller/index.php');
+/*End::Seller Routes*/
 
 /*Begin::Auth Routes*/
 include('auth/index.php');

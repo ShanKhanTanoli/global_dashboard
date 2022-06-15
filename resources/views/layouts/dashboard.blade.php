@@ -11,52 +11,67 @@
     <title>
         {{ Request::path() }}
     </title>
-    <!--     Fonts and icons     -->
+    <!-- Head Scripts -->
+    @yield('headscripts')
+    <!-- Fonts and icons -->
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('dashboard/css/material-dashboard.css?v=3.0.1') }}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @livewireStyles
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
 
-    @if($user = Auth::user())
+    @if ($user = Auth::user())
 
-    @if($user->role_id == 1 && $user->role = "admin")
-    <!--Begin::Sidebar-->
-    @include('livewire.admin.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role == 'admin')
+            <!--Begin::Sidebar-->
+            @include('livewire.admin.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
-    @if($user->role_id == 2 && $user->role = "landlord")
-    <!--Begin::Sidebar-->
-    @include('livewire.landlord.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role == 'buyer')
+            <!--Begin::Sidebar-->
+            @include('livewire.buyer.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
-    @if($user->role_id == 3 && $user->role = "tenant")
-    <!--Begin::Sidebar-->
-    @include('livewire.tenant.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
-
-    @if($user->role_id == 4 && $user->role = "contractor")
-    <!--Begin::Sidebar-->
-    @include('livewire.contractor.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role == 'seller')
+            <!--Begin::Sidebar-->
+            @include('livewire.seller.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
     @endif
 
     <!--Begin::Main-->
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
-        <!--Begin::Top Bar-->
-        @include('livewire.admin.dashboard.partials.top-bar')
-        <!--End::Top Bar-->
+        @if ($user = Auth::user())
+
+            @if ($user->role == 'admin')
+                <!--Begin::Top-Bar-->
+                @livewire('admin.dashboard.partials.top-bar')
+                <!--Begin::Top-Bar-->
+            @endif
+
+            @if ($user->role == 'buyer')
+                <!--Begin::Top-Bar-->
+                @livewire('buyer.dashboard.partials.top-bar')
+                <!--Begin::Top-Bar-->
+            @endif
+
+            @if ($user->role == 'seller')
+                <!--Begin::Top-Bar-->
+                @livewire('seller.dashboard.partials.top-bar')
+                <!--Begin::Top-Bar-->
+            @endif
+
+        @endif
 
         <!--Begin::Section-->
         @yield('content')
@@ -70,6 +85,7 @@
     <script src="{{ asset('dashboard/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('dashboard/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('dashboard/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -79,11 +95,9 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('dashboard/js/material-dashboard.min.js?v=3.0.1') }}"></script>
     @livewireScripts
+
+    @yield('scripts')
 </body>
 
 </html>
